@@ -1,0 +1,12 @@
+<script language="JavaScript">
+	var o=new XMLHttpRequest();
+	function dR() {
+		o.open("GET","data.txt?r="+Math.random(),1);
+		o.onload=function(){
+			var a=this.responseText.replace(/\s*[\r\n=]+\s*/g, "=").replace(/^\s+/,"").replace(/\s+$/,"").match( /([^=]+)/g);
+			for (var i=0, len=a.length; i< len; i+=2) try { document.getElementById(a[i]).innerText=a[i+1]; } catch(e) {};
+			setTimeout("dR()", 10);
+		}
+		o.send();
+	}
+</script>
