@@ -1,8 +1,6 @@
-Virtual Wire
+Virtual Wire 2
 
-This is the VirtualWire library for Arduino
-It provides a simple message passing protocol for a range of inexpensive
-transmitter and receiver modules.
+Известная библиотека Virtual Wire перевдённая на второй таймер, так что теперь она не конфликтует с библиотекой Servo.
 
-See http://www.open.com.au/mikem/arduino/VirtualWire.pdf for full documentation.
+Подробнее - http://arduino.ru/forum/programmirovanie/perevod-virtualwire-na-vtoroi-taimer-v-unonanoetc
 
