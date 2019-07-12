@@ -1,0 +1,2 @@
+Библиотека для поддержки потокового выводы в Arduino, а также перенаправление функции prinf на вывод в Serial.
+Подробнее - http://arduino.ru/forum/programmirovanie/etyudy-dlya-nachinayushchikh-potokovyi-vyvod-v-serial
