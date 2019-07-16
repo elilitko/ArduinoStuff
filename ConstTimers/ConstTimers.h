@@ -161,6 +161,8 @@
 #define ATmega32U4Detected (defined(__AVR_ATmega32U4__))
 #define ATmega32ADetected (defined(__AVR_ATmega32A__))
 
+#include <ctype.h>
+
 #define	FCPU	F_CPU
 
 namespace constTimersNS {
