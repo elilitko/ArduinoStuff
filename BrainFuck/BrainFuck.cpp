@@ -10,11 +10,11 @@ BFResult BrainFuck(char * bfProgram) {
 	int memPtr = PINS_MEMORY_SIZE;
 	int loopCounter = 0;
    //
-   // Инициализация памяти
+   // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїР°РјСЏС‚Рё
 	memset(bfMemory + PINS_MEMORY_SIZE, 0, DB_MEMORY);
 	for (int8_t i = 2; i < 14; i++) bfMemory[PINS_MEMORY_SIZE + 1 - i] = digitalRead(i);
    //
-   // удаление из строки-программы всех символов кроме <>+-.,[]
+   // СѓРґР°Р»РµРЅРёРµ РёР· СЃС‚СЂРѕРєРё-РїСЂРѕРіСЂР°РјРјС‹ РІСЃРµС… СЃРёРјРІРѕР»РѕРІ РєСЂРѕРјРµ <>+-.,[]
 	static const char * bfCommands = "<>+-.,[]";
 	char *p = bfProgram;
 	for (int ncmd = strspn(p, bfCommands); ncmd < (int)strlen(p); ncmd = strspn(p, bfCommands)) {
@@ -22,7 +22,7 @@ BFResult BrainFuck(char * bfProgram) {
 		strcpy(p, p + strcspn(p, bfCommands));
 	}
    //
-   // Собственно цикл интерпретатора
+   // РЎРѕР±СЃС‚РІРµРЅРЅРѕ С†РёРєР» РёРЅС‚РµСЂРїСЂРµС‚Р°С‚РѕСЂР°
 	const int programSize = strlen(bfProgram);
 	for (int progPtr = 0; progPtr < programSize; progPtr++) {
 		switch (bfProgram[progPtr]) {
