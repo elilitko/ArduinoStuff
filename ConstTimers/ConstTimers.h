@@ -149,15 +149,40 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#define ATtiny85Detected	(defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
-#define ATmega328Detected	(defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega88A__) \
-	|| defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168PA__) \
-	|| defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__))
-#define ATmega2561Detected	(defined(__AVR_ATmega640__) || defined(__AVR_ATmega640V__) || defined(__AVR_ATmega1280__) \
-	|| defined(__AVR_ATmega1280V__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega1281V__) \
-	|| defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2560V__) || defined(__AVR_ATmega2561__) || defined(__AVR_ATmega2561V__))
-#define ATmega32U4Detected (defined(__AVR_ATmega32U4__))
-#define ATmega32ADetected (defined(__AVR_ATmega32A__))
+#if (defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
+	#define	ATtiny85Detected	true
+#else
+	#define	ATtiny85Detected	false
+#endif
+
+#if 	(defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega88A__) \
+		|| defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168PA__) \
+		|| defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__))
+	#define	ATmega328Detected	true
+#else
+	#define	ATmega328Detected	false
+#endif
+
+#if 	(defined(__AVR_ATmega640__) || defined(__AVR_ATmega640V__) || defined(__AVR_ATmega1280__) \
+		|| defined(__AVR_ATmega1280V__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega1281V__) \
+		|| defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2560V__) || defined(__AVR_ATmega2561__) || defined(__AVR_ATmega2561V__))
+	#define ATmega2561Detected true
+#else
+	#define ATmega2561Detected false
+#endif
+
+
+#if (defined(__AVR_ATmega32U4__))
+	#define ATmega32U4Detected	true
+#else
+	#define ATmega32U4Detected	false
+#endif
+
+#if (defined(__AVR_ATmega32A__))
+	#define ATmega32ADetected true
+#else
+	#define ATmega32ADetected false
+#endif
 
 #include <ctype.h>
 
