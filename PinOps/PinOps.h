@@ -1,4 +1,4 @@
-﻿#ifndef	PINOPS_H
+#ifndef	PINOPS_H
 #define	PINOPS_H
 //
 ///////////////////////////////////////////////////////
@@ -115,11 +115,25 @@
 #define LOW 0x0
 #endif // !LOW
 
-#define ATtiny85Detected	(defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
-#define ATmega328Detected	(defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega88A__) \
-|| defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168PA__) \
-|| defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__))
-#define ATmega32ADetected (defined(__AVR_ATmega32A__))
+#if (defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
+	#define	ATtiny85Detected	true
+#else
+	#define	ATtiny85Detected	false
+#endif
+
+#if 	(defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega88A__) \
+		|| defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168PA__) \
+		|| defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__))
+	#define	ATmega328Detected	true
+#else
+	#define	ATmega328Detected	false
+#endif
+
+#if (defined(__AVR_ATmega32A__))
+	#define ATmega32ADetected true
+#else
+	#define ATmega32ADetected false
+#endif
 
 #if ATmega328Detected
 
