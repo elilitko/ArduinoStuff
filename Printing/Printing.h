@@ -2,7 +2,7 @@
 #define	PRINTING_H
 
 // для печати в виде "A=321"
-#define printVar(x) do { Serial << #x "=" << x << "\r\n"; } while (false)
+#define printVar(x) do { Serial << #x "=" << (x) << "\r\n"; } while (false)
 
 template <typename T> inline Print & operator << (Print &s, T n) { s.print(n); return s; }
 
