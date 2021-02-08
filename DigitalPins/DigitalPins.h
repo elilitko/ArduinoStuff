@@ -72,9 +72,22 @@
 #define LOW 0x0
 #endif // !LOW
 
-#define	__AVR_ATtinyDetected__	(defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
+#if (defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
+#define	__AVR_ATtinyDetected__	true
+#else
+#define	__AVR_ATtinyDetected__	false
+#endif
 
-#if (!__AVR_ATtinyDetected__) && (!defined(__AVR_ATmega328P__))
+#if 	(defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega88A__) \
+|| defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168PA__) \
+|| defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__))
+#define	ATmega328Detected	true
+#else
+#define	ATmega328Detected	false
+#endif
+
+
+#if (!__AVR_ATtinyDetected__) && (! ATmega328Detected)
 #ifndef IGNORE_CPU_CHECK
 #error The library has been well tested for ATmega328P and ATtiny25/45/85 only. Define IGNORE_CPU_CHECK option to ignore this check.
 #endif // !IGNORE_CPU_CHECK
