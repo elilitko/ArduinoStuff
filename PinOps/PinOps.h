@@ -32,7 +32,7 @@
 //
 //
 //	Если параметры заданы константами, то все функции компилируются в одну (в случае pinMode с
-//	параметром INPUP_PULLUP – в две) команду процессора.
+//	параметром INPUP_PULLUP – в две) команды процессора.
 //
 //	Если же параметры – переменные, то функции разворачиваются в некоторые последовательности команд,
 //	заметно более экономичные и по памяти, и по бстродействию), чем штатные функции среды или макросы
@@ -47,7 +47,7 @@
 //	----------------------------
 //
 //		пины 0-4 - PORTB, 0-4
-//		PIN_RESET - PORTB, 5
+//		RESET_PIN - PORTB, 5
 //
 //	ATmega48A, ATmega48PA, ATmega88A, ATmega88PA, ATmega168A, ATmega168PA, ATmega328, ATmega328P
 //	--------------------------------------------------------------------------------------------
@@ -63,8 +63,8 @@
 //	---------
 //
 //		пины с 0 по 7 - PORTB 0-7
-//		пины с 8 по 15 - PORTС 0-7
-//		пины с 16 по 23 - PORTD 0-7
+//		пины с 8 по 15 - PORTD 0-7
+//		пины с 16 по 23 - PORTC 0-7
 //		пины с 24 по 31 - PORTA 0-7
 //
 //
@@ -115,27 +115,10 @@
 #define LOW 0x0
 #endif // !LOW
 
-#if (defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
-	#define	ATtiny85Detected	true
-#else
-	#define	ATtiny85Detected	false
-#endif
+#include <SupportedMCU.h>
+#include <bitmask.h>
 
-#if 	(defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega88A__) \
-		|| defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168PA__) \
-		|| defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__))
-	#define	ATmega328Detected	true
-#else
-	#define	ATmega328Detected	false
-#endif
-
-#if (defined(__AVR_ATmega32A__))
-	#define ATmega32ADetected true
-#else
-	#define ATmega32ADetected false
-#endif
-
-#if ATmega328Detected
+#if mcuATmega328Detected
 
 #define A0	14
 #define A1	15
@@ -152,7 +135,12 @@
 
 #define PARAMETER_PIN	const uint8_t pin
 
-#elif ATtiny85Detected
+#elif mcuATtiny85Detected
+
+#define A0	5
+#define A1	2
+#define A2	4
+#define A3	3
 
 #define RESET_PIN	5	//	(PCINT5/RESET/ADC0/dW) PB5
 
@@ -161,9 +149,9 @@
 
 #define CLEARPIN	(void)pin;
 
-#define PARAMETER_PIN	const uint8_t
+#define PARAMETER_PIN	const uint8_t pin
 
-#elif ATmega32ADetected
+#elif mcuATmega32Detected
 
 #define A0	24
 #define A1	25
@@ -174,8 +162,57 @@
 #define A6	30
 #define A7	31
 
-#define GET_PORT(port, pin) (pin < 8) ? port##B : (pin < 16) ? port##C : (pin < 24) ? port##D : port##A
+#define GET_PORT(port, pin) (pin < 8) ? port##B : (pin < 16) ? port##D : (pin < 24) ? port##C : port##A
 #define GET_MASK(pin) (1 << ((pin) % 8))
+
+#define PARAMETER_PIN	const uint8_t pin
+
+#elif mcuATmega8515Detected
+
+#define GET_PORT(port, pin) (pin < 8) ? port##B : (pin < 16) ? port##D : (pin < 24) ? port##C : port##A
+#define GET_MASK(pin) (1 << ((pin) % 8))
+
+#define PARAMETER_PIN	const uint8_t pin
+
+#elif mcuATmega2560Detected
+
+#define	A0		54
+#define	A1		55
+#define	A2		56
+#define	A3		57
+#define	A4		58
+#define	A5		59
+#define	A6		60
+#define	A7		61
+#define	A8		62
+#define	A9		63
+#define	A10	64
+#define	A11	65
+#define	A12	66
+#define	A13	67
+#define	A14	68
+#define	A15	69
+
+#define GET_PORT(port, pin)	\
+	(pin > 21 && pin < 30) ? port##A :	\
+	((pin > 9 && pin < 14) || (pin > 49 && pin < 54)) ? port##B :	\
+	(pin > 29 && pin < 38) ? port##C :	\
+	((pin > 17 && pin < 22) || (pin == 38)) ? port##D :	\
+	((pin >= 0 && pin < 4) || (pin == 5)) ? port##E :	\
+	(pin > 53 && pin < 62) ? port##F :	\
+	((pin > 38 && pin < 42) || (pin == 5)) ? port##G :	\
+	((pin > 5 && pin < 10) || (pin > 15 && pin < 18)) ? port##H :	\
+	(pin > 13 && pin < 16) ? port##J :	\
+	(pin > 61 && pin < 70) ? port##K : port##L
+
+#define GET_MASK(pin)	\
+	((pin == 0) || (pin == 15) || (pin == 17) || (pin == 21) || (pin == 22) || (pin == 37) || (pin == 41) || (pin == 49) || (pin == 53) || (pin == 54) || (pin == 62)) ? bitMask(0) :	\
+	((pin == 1) || (pin == 14) || (pin == 16) || (pin == 20) || (pin == 23) || (pin == 36) || (pin == 40) || (pin == 48) || (pin == 52) || (pin == 55) || (pin == 63)) ? bitMask(1) :	\
+	((pin == 19) || (pin == 24) || (pin == 35) || (pin == 39) || (pin == 47) || (pin == 51) || (pin == 56) || (pin == 64)) ? bitMask(2) :	\
+	((pin == 5) || (pin == 6) || (pin == 18) || (pin == 25) || (pin == 34) || (pin == 46) || (pin == 50) || (pin == 57) || (pin == 65)) ? bitMask(3) :	\
+	((pin == 2) || (pin == 7) || (pin == 10) || (pin == 26) || (pin == 33) || (pin == 45) || (pin == 58) || (pin == 66)) ? bitMask(4) :	\
+	((pin == 3) || (pin == 4) || (pin == 8) || (pin == 11) || (pin == 27) || (pin == 32) || (pin == 44) || (pin == 59) || (pin == 67)) ? bitMask(5) :	\
+	((pin == 9) || (pin == 12) || (pin == 28) || (pin == 31) || (pin == 43) || (pin == 60) || (pin == 68)) ? bitMask(6) :	bitMask(7)
 
 #define PARAMETER_PIN	const uint8_t pin
 
@@ -208,7 +245,7 @@ struct PinOps {
 		else getOut(pin) &= ~getBitMask(pin);
 	}
 
-	#if ATmega328Detected || ATtiny85Detected
+	#if mcuATmega328Detected || mcuATtiny85Detected || mcuATmega2560Detected
 	static inline void pinToggle(const int8_t pin) AI {
 		getIn(pin) |= getBitMask(pin);
 	}
