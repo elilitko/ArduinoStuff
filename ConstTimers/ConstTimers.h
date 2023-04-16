@@ -126,14 +126,16 @@
 //
 // ЛИЦЕНЗИЯ
 //
+// Данный код поставляется по лицензии ПНХ.
+//
 // 1. Вы можете свободно использовать или не использовать его в коммерческих,
 //    некоммерческих, и любых иных, не запрещённых законом, целях.
 //
 // 2. Автор не несёт решительно никакой ответственности за любые положительные
 //    или отрицательные результаты использования или неиспользования данного кода.
 //
-// 3. Если Вам таки хочется сделать автору предъяву, то Вы знаете куда
-//    Вам следует обратиться. 
+// 3. Если Вам таки хочется сделать автору предъяву, то Вы знаете, куда
+//    Вам следует обратиться. А если не знаете, то см. название лицензии.
 //
 // 4. Если данный код вдруг Вам пригодился (как учебник или ещё как что) и Вам
 //    почему-либо (ну, приболели, может) захотелось отблагодарить автора рублём,
@@ -149,44 +151,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#if (defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__))
-	#define	ATtiny85Detected	true
-#else
-	#define	ATtiny85Detected	false
-#endif
-
-#if 	(defined(__AVR_ATmega48A__) || defined(__AVR_ATmega48PA__) || defined(__AVR_ATmega88A__) \
-		|| defined(__AVR_ATmega88PA__) || defined(__AVR_ATmega168A__) || defined(__AVR_ATmega168PA__) \
-		|| defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__))
-	#define	ATmega328Detected	true
-#else
-	#define	ATmega328Detected	false
-#endif
-
-#if 	(defined(__AVR_ATmega640__) || defined(__AVR_ATmega640V__) || defined(__AVR_ATmega1280__) \
-		|| defined(__AVR_ATmega1280V__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega1281V__) \
-		|| defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2560V__) || defined(__AVR_ATmega2561__) || defined(__AVR_ATmega2561V__))
-	#define ATmega2561Detected true
-#else
-	#define ATmega2561Detected false
-#endif
-
-
-#if (defined(__AVR_ATmega32U4__))
-	#define ATmega32U4Detected	true
-#else
-	#define ATmega32U4Detected	false
-#endif
-
-#if (defined(__AVR_ATmega32A__))
-	#define ATmega32ADetected true
-#else
-	#define ATmega32ADetected false
-#endif
-
+#include <SupportedMCU.h>
 #include <ctype.h>
 
-#define	FCPU	F_CPU
+#ifndef FCPU
+	#define	FCPU	F_CPU
+#endif
 
 namespace constTimersNS {
 
@@ -201,7 +171,7 @@ static constexpr uint32_t	bits10 = 0x000003FFul;
 static constexpr uint32_t	bits16 = 0x0000FFFFul;
 
 
-#if ATmega328Detected || ATmega32ADetected
+#if mcuATmega328Detected || mcuATmega32Detected
 
 static constexpr  int16_t prescalers01[] = { 1, 8, 64, 256, 1024 };
 static constexpr  int16_t prescalers2[] = { 1, 8, 32, 64, 128, 256, 1024 };
@@ -212,7 +182,16 @@ static constexpr STimerParameters timerParameters[] = {
 	{ bits8, prescalers2, sizeof(prescalers2) / sizeof(prescalers2[0]) }
 };
 
-#elif	ATmega32U4Detected
+#elif mcuATmega8515Detected
+
+static constexpr  int16_t prescalers01[] = { 1, 8, 64, 256, 1024 };
+
+static constexpr STimerParameters timerParameters[] = {
+	{ bits8, prescalers01, sizeof(prescalers01) / sizeof(prescalers01[0]) },
+	{ bits16, prescalers01, sizeof(prescalers01) / sizeof(prescalers01[0]) }
+};
+
+#elif	mcuATmega32U4Detected
 
 static constexpr  int16_t prescalers013[] = { 1, 8, 64, 256, 1024 };
 static constexpr  int16_t prescalers2[] = { 1, 8, 32, 64, 128, 256, 1024 };
@@ -226,7 +205,7 @@ static constexpr STimerParameters timerParameters[] = {
 	{ bits10, prescalers4, sizeof(prescalers4) / sizeof(prescalers4[0]) }
 };
 
-#elif ATmega2561Detected
+#elif mcuATmega2560Detected
 
 static constexpr  int16_t prescalers01345[] = { 1, 8, 64, 256, 1024 };
 static constexpr  int16_t prescalers2[] = { 1, 8, 32, 64, 128, 256, 1024 };
@@ -240,7 +219,7 @@ static constexpr STimerParameters timerParameters[] = {
 	{ bits16, prescalers01345, sizeof(prescalers01345) / sizeof(prescalers01345[0]) }
 };
 
-#elif ATtiny85Detected
+#elif mcuATtiny85Detected
 
 static constexpr  int16_t prescalers0[] = { 1, 8, 64, 256, 1024 };
 static constexpr  int16_t prescalers1[] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384 };
