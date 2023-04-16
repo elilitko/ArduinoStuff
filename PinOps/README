@@ -3,7 +3,7 @@
 если же параметры - переменные, то генерируется код для вычисления порта (этим выгодно отличеается от CyberLib). 
 Также есть поддержка пинов XTAL и RESET.
 
-Поддерживаются ATmega328P (и аналоги), ATmega32A и ATtiny24-85
+Поддерживаются ATmega328P (и аналоги), ATmega32A и ATtiny24-85, ATmega2560 и ATmega8515
 
 См. примеры и подробности:
 http://arduino.ru/forum/programmirovanie/s-ili-%C2%ABsnova-ob-umenii-gotovit%C2%BB
